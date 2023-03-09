@@ -10,9 +10,7 @@ const pixabayAPI = new PixabayAPI();
 
 
 const formRef = document.querySelector('.search-form');
-const inputRef = document.querySelector('.search__input');
 const listRef = document.querySelector('.gallery');
-const alertRef = document.querySelector('.alert-box');
 const spinnerRef = document.querySelector('.spinner');
 
 let lightbox = new SimpleLightbox('.gallery .photo-card .img-wrap a', { captionDelay: 250 });
@@ -20,7 +18,6 @@ let lightbox = new SimpleLightbox('.gallery .photo-card .img-wrap a', { captionD
 let isEnd = false;
 
 formRef.addEventListener('submit', onSubmit);
-// btnRef.addEventListener("click", onBtnClick);
 window.addEventListener("scroll", throttle(onScroll, 300));
     
 
@@ -32,18 +29,18 @@ async function onScroll(e){
             const data = await pixabayAPI.fetchApi();
             if(data === 400 || data.hits.length === 0){
                 showAlert();
-                const spin = await disableBtn();
+                disableBtn();
                 isEnd = true;
                 return;
             }
-            const draw = await drawElements(data.hits);
-            const spin = await disableBtn();
-            const scroll = await onAddItems();
+            drawElements(data.hits);
+            disableBtn();
+            onAddItems();
             lightbox.refresh();
         }
     }
 }
-async function onAddItems(){
+function onAddItems(){
     const { height: cardHeight } = listRef.firstElementChild.getBoundingClientRect();
     
     window.scrollBy({
@@ -66,19 +63,19 @@ async function onSubmit(e){
     const data = await pixabayAPI.fetchApi();
     if(data.totalHits === 0){
         onError();
-        const spin = await disableBtn();
+        disableBtn();
         return;
     }
-    const draw = await drawElements(data.hits);
+    drawElements(data.hits);
     onSuccess(data.totalHits);
-    const spin = await disableBtn();
+    disableBtn();
     lightbox.refresh();
 }
 
-async function disableBtn(){
+function disableBtn(){
     spinnerRef.classList.add("disabled");
 }
-async function enableBtn(){
+function enableBtn(){
     spinnerRef.classList.remove("disabled");
 }
 function drawElements(cards){
