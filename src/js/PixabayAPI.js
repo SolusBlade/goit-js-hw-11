@@ -31,8 +31,8 @@ export default class PixabayAPI {
             const {data} = await axios.get(`${this.#BASE_URL}?${params}`);
             this.incrementPage();
             return data;
-          } catch ({code}) {
-            return code;
+          } catch ({response:{status}}) {
+            return status;
           }
     }
     incrementPage(){

@@ -30,7 +30,7 @@ async function onScroll(e){
         const docRect = document.documentElement.getBoundingClientRect();
         if(docRect.bottom < document.documentElement.clientHeight + 100){
             const data = await pixabayAPI.fetchApi();
-            if(data === "ERR_BAD_REQUEST" || data.hits.length === 0){
+            if(data === 400 || data.hits.length === 0){
                 showAlert();
                 const spin = await disableBtn();
                 isEnd = true;
