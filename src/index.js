@@ -31,7 +31,7 @@ async function onScroll(e){
         if(docRect.bottom < document.documentElement.clientHeight + 100){
             const data = await pixabayAPI.fetchApi();
             if(data === "ERR_BAD_REQUEST" || data.hits.length === 0){
-                drawAlert();
+                showAlert();
                 const spin = await disableBtn();
                 isEnd = true;
                 return;
@@ -45,6 +45,7 @@ async function onScroll(e){
 }
 async function onAddItems(){
     const { height: cardHeight } = listRef.firstElementChild.getBoundingClientRect();
+    
     window.scrollBy({
             top: cardHeight * 2,
             behavior: "smooth",
@@ -53,7 +54,6 @@ async function onAddItems(){
 async function onSubmit(e){
     e.preventDefault();
     listRef.innerHTML = "";
-    alertRef.innerHTML = "";
     isEnd = false;
     const inputData = e.currentTarget.elements.searchQuery.value.trim();
     if(inputData === ''){
@@ -74,12 +74,7 @@ async function onSubmit(e){
     const spin = await disableBtn();
     lightbox.refresh();
 }
-function drawAlert(){
-    const markup = `
-        <p class="alert-msg">We're sorry, but you've reached the end of search results</p>
-      `;
-    alertRef.innerHTML = markup;
-}
+
 async function disableBtn(){
     spinnerRef.classList.add("disabled");
 }
@@ -140,5 +135,14 @@ function onError(){
         {
           timeout: 2000,
         },
-      )
+    )
+}
+
+function showAlert(){
+    Notiflix.Notify.info(
+        `We're sorry, but you've reached the end of search results`,
+        {
+          timeout: 2000,
+        },
+    )
 }
