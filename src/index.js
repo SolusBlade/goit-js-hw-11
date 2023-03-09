@@ -18,8 +18,7 @@ let lightbox = new SimpleLightbox('.gallery .photo-card .img-wrap a', { captionD
 let isEnd = false;
 
 formRef.addEventListener('submit', onSubmit);
-window.addEventListener("scroll", throttle(onScroll, 300));
-    
+window.addEventListener("scroll", throttle(onScroll, 500));
 
 async function onScroll(e){
     if(!isEnd){
