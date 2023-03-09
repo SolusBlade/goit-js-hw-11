@@ -22,9 +22,7 @@ formRef.addEventListener('submit', onSubmit);
 window.addEventListener("scroll", throttle(onScroll, 500));
 
 async function onScroll(e){
-    console.log("1")
     if(!isEnd && isAvailable){
-        console.log("2")
         const docRect = document.documentElement.getBoundingClientRect();
         if(docRect.bottom < document.documentElement.clientHeight + 100){
             enableBtn();
