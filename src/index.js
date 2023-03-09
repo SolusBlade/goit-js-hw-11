@@ -16,15 +16,19 @@ const spinnerRef = document.querySelector('.spinner');
 let lightbox = new SimpleLightbox('.gallery .photo-card .img-wrap a', { captionDelay: 250 });
 
 let isEnd = false;
+let isAvailable = true;
 
 formRef.addEventListener('submit', onSubmit);
 window.addEventListener("scroll", throttle(onScroll, 500));
 
 async function onScroll(e){
-    if(!isEnd){
-        enableBtn();
+    console.log("1")
+    if(!isEnd && isAvailable){
+        console.log("2")
         const docRect = document.documentElement.getBoundingClientRect();
         if(docRect.bottom < document.documentElement.clientHeight + 100){
+            enableBtn();
+            isAvailable = false;
             const data = await pixabayAPI.fetchApi();
             if(data === 400 || data.hits.length === 0){
                 showAlert();
@@ -36,6 +40,7 @@ async function onScroll(e){
             disableBtn();
             onAddItems();
             lightbox.refresh();
+            isAvailable = true;
         }
     }
 }
