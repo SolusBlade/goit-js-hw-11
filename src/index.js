@@ -19,13 +19,14 @@ let isEnd = false;
 let isAvailable = true;
 
 formRef.addEventListener('submit', onSubmit);
-window.addEventListener("scroll", throttle(onScroll, 500));
+spinnerRef.addEventListener('click', onScroll);
+// window.addEventListener("scroll", throttle(onScroll, 500));
 
 async function onScroll(e){
-    if(!isEnd && isAvailable){
+    if(!isEnd){
         const docRect = document.documentElement.getBoundingClientRect();
         if(docRect.bottom < document.documentElement.clientHeight + 100){
-            enableBtn();
+            // enableBtn();
             isAvailable = false;
             const data = await pixabayAPI.fetchApi();
             if(data === 400 || data.hits.length === 0){
@@ -35,7 +36,7 @@ async function onScroll(e){
                 return;
             }
             drawElements(data.hits);
-            disableBtn();
+            // disableBtn();
             onAddItems();
             lightbox.refresh();
             isAvailable = true;
@@ -61,7 +62,7 @@ async function onSubmit(e){
     }
     pixabayAPI.searchInput = inputData;
     pixabayAPI.resetPage();
-    enableBtn();
+    // enableBtn();
     const data = await pixabayAPI.fetchApi();
     if(data.totalHits === 0){
         onError();
@@ -70,7 +71,8 @@ async function onSubmit(e){
     }
     drawElements(data.hits);
     onSuccess(data.totalHits);
-    disableBtn();
+    // disableBtn();
+    enableBtn();
     lightbox.refresh();
 }
 
